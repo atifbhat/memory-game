@@ -1,3 +1,16 @@
+body{
+  background-color: var (--base);
+}
+
+:root{
+  --base:#E8EDDF;
+  --light: #CFDBD5;
+  --yellow:#F5CB5C;
+  --dark:#333533; 
+  --black:#242423;
+
+}
+
 .App{
   text-align: center;
 }
@@ -10,10 +23,17 @@
   padding: 0.5rem;
 }
 .card{
-  border:1px solid black;
+  border:3px solid var(--base);
   border-radius: 5px;
-  background-color:black;
+  background-color:var(--dark);
+  transition: all 0.25s;
+  cursor:pointer;
 }
+
+.card:hover {
+border-color: var(--yellow);
+}
+
 .content{
   visibility: hidden;
 }
@@ -22,4 +42,11 @@
 }
 .flipped>.content{
   visibility: visible;
+}
+.main-title{
+  color:var(--black)
+}
+.card.flipped{
+  border-color:var(--black );
+  
 }
