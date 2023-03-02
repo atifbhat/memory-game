@@ -11,6 +11,7 @@ import {randomizeArr} from '../Helperfunctions';
 
 const Grid =()=>{
     const [flipped,setFlipped]=useState(initRevealState);
+    const [matched, setMatched]=useState(initRevealState);
     const [randomArr,setRandomArr]= useState(pair_emojis);
     const [timerID, setTimerID]=useState(0); 
     const [score,setScore]=useState(0);
@@ -19,7 +20,7 @@ const Grid =()=>{
     useEffect(()=>{
         const random_arr=randomizeArr(pair_emojis);
         setRandomArr(random_arr);
-        console.log(random_arr);
+        
     },[]);
 
 
@@ -63,10 +64,37 @@ const Grid =()=>{
      
        if(flipped_count_after==2){
 
-        const timer_id=  setTimeout(()=>{
-            setFlipped(initRevealState);
-        },2000);
-        setTimerID(timer_id);
+        let selected_index=[];
+
+        flipped_copy.forEach((single_element, idx)=>{
+            if(single_element){
+                selected_index.push(idx);
+            }
+        });
+
+            if(randomArr[selected_index[0]]==randomArr[selected_index[1]])
+            {
+                const matched_copy=[...matched];
+                matched_copy[selected_index[0]]= true;
+                matched_copy[selected_index[1]]= true;
+
+              const allMatched= matched_copy.every((single_element)=> single_element===true);
+                  
+               
+                if(allMatched){
+                    alert("won");
+                }
+
+                setMatched(matched_copy);
+            }
+            else{
+                const timer_id=  setTimeout(()=>{
+                    setFlipped(initRevealState);
+                },2000);
+                setTimerID(timer_id);
+            }
+
+        
         setScore(score + 1);
        }
 
@@ -83,6 +111,7 @@ const Grid =()=>{
         {flipped.map((single_data,idx)=>{
            
            const emoji=randomArr[idx];
+           const matched_state= matched[idx];
             
             return(
                 <Card
@@ -90,7 +119,9 @@ const Grid =()=>{
                  isFlipped={single_data} 
                  flip={toggleFlipped} 
                  index={idx}
-                 emoji={emoji}/>
+                 emoji={emoji}
+                 matchedState={matched_state}
+                 />
                 
             )
         })}
