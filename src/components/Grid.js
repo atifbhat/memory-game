@@ -2,7 +2,7 @@ import Card from "./Card";
 import {useEffect, useState} from 'react';
 import { pair_emojis,initRevealState } from "../Constants";
 import {randomizeArr} from '../Helperfunctions';
-
+import Confetti from 'react-confetti';
 
 
 
@@ -15,6 +15,7 @@ const Grid =()=>{
     const [randomArr,setRandomArr]= useState(pair_emojis);
     const [timerID, setTimerID]=useState(0); 
     const [score,setScore]=useState(0);
+    const [winning,setWinning]=useState(false);
     
     
     useEffect(()=>{
@@ -62,7 +63,7 @@ const Grid =()=>{
      
      
      
-       if(flipped_count_after==2){
+       if(flipped_count_after===2){
 
         let selected_index=[];
 
@@ -72,7 +73,7 @@ const Grid =()=>{
             }
         });
 
-            if(randomArr[selected_index[0]]==randomArr[selected_index[1]])
+            if(randomArr[selected_index[0]]===randomArr[selected_index[1]])
             {
                 const matched_copy=[...matched];
                 matched_copy[selected_index[0]]= true;
@@ -82,7 +83,7 @@ const Grid =()=>{
                   
                
                 if(allMatched){
-                    alert("won");
+                    setWinning(true);
                 }
 
                 setMatched(matched_copy);
@@ -106,6 +107,7 @@ const Grid =()=>{
    
     return(
         <>
+        {winning ? <Confetti/> :false}
         <div className="cards-container">
         
         {flipped.map((single_data,idx)=>{
